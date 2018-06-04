@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="css/materialize.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+    <nav class=" yellow lighten-3">
+        <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    </nav>
+
+    <ul id="slide-out" class="sidenav">
+        <li>
+            <div class="user-view">
+                <div class="background">
+
+                </div>
+
+            </div>
+        </li>
+        <li><a href="index.html" class="waves-effect"><i class="material-icons">
+home</i>Главное</a></li>
+        <li><a href="found.html" class="waves-effect">Найдено</a></li>
+
+        <li><a class="waves-effect" href="lost.html">Потеряны</a></li>
+        <li><a class="waves-effect" href="ostavit.html">Оставить обьявление</a></li>
+        <li><a class="waves-effect" href="myPost.html">Мои объявления</a></li>
+    </ul>
+
+    <div class="row">
+
+        <div class="row">
+            <div class="input-field col s6">
+                <input id="title" type="text" class="validate title">
+                <label for="title">Заголовок</label>
+            </div>
+            <div class="input-field col s6">
+                <input id="contact" type="text" class="validate contact">
+                <label for="contact">Номер телефона или почта</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="description" type="text" class="validate desc">
+                <label for="description">Описание находки или потеряной вещи</label>
+            </div>
+        </div>
+        <p>
+
+
+
+            <label>
+        <input name="group1" type="radio" id="lost" value="1"/>
+        <span>Потеряно</span>
+      </label>
+        </p>
+
+        <p>
+            <label>
+        <input name="group1" type="radio" id="found" value="0">
+        <span>Найдено</span>
+      </label>
+        </p>
+        <button class="btn waves-effect waves-light baton" type="submit" name="action">Отправить
+    <i class="material-icons right">send</i>
+  </button>
+
+    </div>
+    <script src="js/jquery-3.3.1.min.js">
+
+
+    </script>
+    <script src="js/materialize.js"></script>
+    <script>
+        var btn = document.querySelector(".baton")
+        var title_input = document.querySelector(".title")
+        var contact_input = document.querySelector(".contact")
+        var desc_input = document.querySelector(".desc")
+        var lost = document.getElementById("lost")
+        var found = document.getElementById("found")
+        var statuss = null;
+
+
+
+
+        btn.onclick = function() {
+            if (lost.checked) {
+                statuss = lost.value
+            } else if (found.checked) {
+                statuss = found.value;
+            }
+            
+            $.ajax({
+                url: "http://127.0.0.1:8000/getDB",
+                data: {
+                    title: title_input.value,
+                    description: desc_input.value,
+                    contact: contact_input.value,
+                    status: statuss
+                },
+                success: function(data) {
+                    console.log(data)
+                    localStorage.setItem('myId', data.id);
+                    var localValue = localStorage.getItem('myId');
+                    location.replace("index.html");
+                }
+            });
+
+        };
+        $(document).ready(function() {
+            $('.sidenav').sidenav();
+        });
+
+    </script>
+</body>
+
+</html>
